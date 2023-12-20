@@ -1,11 +1,6 @@
-import { useQuery } from "react-query";
-import { fetchTodo, fetchTodos } from "../api/todos";
-import { todoKeys } from "./keys.constant";
+import { useMutation } from "react-query";
+import { addTodo, removeTodo, switchTodo } from "../api/todos";
 
-export function useTodosQuery(filters) {
-    return useQuery(todoKeys.list(filters), () => fetchTodos(filters));
-}
-
-export function useTodoDetailQuery(id) {
-    return useQuery(todoKeys.detail(id), () => fetchTodo(id));
-}
+export const useAddMutation = () => useMutation(addTodo);
+export const useRemoveMutation = () => useMutation(removeTodo);
+export const useSwitchMutation = () => useMutation(switchTodo);

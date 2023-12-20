@@ -1,6 +1,7 @@
 import { useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { getTodos } from "../../../api/todos";
+import { QUERY_KEYS } from "../../../query/keys.constant";
 import {
     StyledButton,
     StyledDiv,
@@ -20,24 +21,34 @@ import {
  *
  * @returns DetailBox 컴포넌트
  */
+
 function DetailBox() {
-    const { isLoading, isError, data: todo } = useQuery("todos", getTodos);
+    const {
+        isLoading,
+        isError,
+        data: todos,
+    } = useQuery(QUERY_KEYS.TODOS, getTodos);
     // 다른 컴포넌트로 이동하기 위한 useNavigate
     const navigate = useNavigate();
 
     // // 이전 컴포넌트에서 넘어온 parameter를 조회
     const params = useParams();
 
-    const filteredTodos = () => {
-        return data.filter((item) => item.id === params.id);
-    };
-    // const filteredTodos = data.filter((item) => item.id === params.id);
-    console.log("필터된거", filteredTodos());
+    console.log("데이타", todos);
+    const todo = todos.find((item) => item.id === params.id);
 
     // 이전 페이지로 가기 버튼을 선택했을 때, 컴포넌트 이동하는 함수
     const handleButtonClick = () => {
         navigate("/");
     };
+
+    if (isLoading) {
+        return <p>로딩중입니다....!</p>;
+    }
+
+    if (isError) {
+        return <p>오류가 발생하였습니다...!</p>;
+    }
 
     return (
         <StyledDiv>
